@@ -6,22 +6,19 @@ set -eu
 # disable 'zsh: no match found' error
 setopt nonomatch
 
-# save password 
-read -rs password\?'Password: '
-
 echo '
 ###########
 apt update
 ###########
 '
-echo ${password} | sudo -S apt update 
+sudo apt update 
 
 echo '
 ###########
 apt install vim ca-certificates ibus-mozc
 ###########
 '
-echo ${password} | sudo -S apt install vim ca-certificates ibus-mozc wget curl gdebi
+sudo apt install vim ca-certificates ibus-mozc wget curl gdebi
 
 echo '
 ###########
@@ -37,7 +34,7 @@ sudo chsh -s `which zsh`
 ###########
 '
 
-echo ${password} | sudo -S chsh -s `which zsh`
+sudo chsh -s `which zsh`
 
 echo '
 ###########
@@ -73,7 +70,7 @@ discord install
 '
 
 wget -O discord.deb 'https://discord.com/api/download?platform=linux&format=deb'
-yes | gdebi discord.deb
+yes | sudo gdebi discord.deb
 
 echo '
 ###########
@@ -82,6 +79,6 @@ VSCode install
 '
 
 wget -O vscode.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
-yes | gdebi vscode.deb
+yes | sudo gdebi vscode.deb
 
 echo 'install complete! need shell reload. "exec $SHELL -l"'
