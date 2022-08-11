@@ -6,6 +6,7 @@ set -eu
 # disable 'zsh: no match found' error
 setopt nonomatch
 
+
 echo '
 ###########
 apt update
@@ -15,10 +16,10 @@ sudo apt update
 
 echo '
 ###########
-apt install vim ca-certificates ibus-mozc
+apt install vim ca-certificates ibus-mozc wget curl gdebi pass
 ###########
 '
-sudo apt install vim ca-certificates ibus-mozc wget curl gdebi
+sudo apt install vim ca-certificates ibus-mozc wget curl gdebi pass
 
 echo '
 ###########
@@ -56,12 +57,25 @@ cp -r ${SCRIPT_DIR}/.z* ~/
 
 echo '
 ###########
+git-credential-manager install
+###########
+'
+
+wget -O gcm.deb https://github.com/GitCredentialManager/git-credential-manager/releases/download/v2.0.785/gcm-linux_amd64.2.0.785.deb
+gdebi gcm.deb
+git-credential-manager-core configure
+
+echo '
+###########
 anyenv install
 ###########
 '
 
 git clone https://github.com/anyenv/anyenv ~/.anyenv
 yes | ~/.anyenv/bin/anyenv install --init
+
+mkdir -p $(anyenv root)/plugins
+git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv-update
 
 echo '
 ###########
@@ -81,4 +95,4 @@ VSCode install
 wget -O vscode.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
 yes | sudo gdebi vscode.deb
 
-echo 'install complete! need shell reload. "exec $SHELL -l"'
+echo 'install complete! **You need to restart system.**'
