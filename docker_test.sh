@@ -60,7 +60,7 @@ echo '
 git-credential-manager install
 ###########
 '
-
+cp ${SCRIPT_DIR}/.gitconfig ~/
 wget -O gcm.deb https://github.com/GitCredentialManager/git-credential-manager/releases/download/v2.0.785/gcm-linux_amd64.2.0.785.deb
 gdebi gcm.deb
 git-credential-manager-core configure
@@ -95,4 +95,10 @@ VSCode install
 wget -O vscode.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
 yes | gdebi vscode.deb
 
-echo 'install complete! **You need to restart system.**'
+echo 'install complete! Your remain tasks...
+ * gpg --generate-key
+ * pass init (generated key)
+ * anyenv install nodenv
+ * anyenv install goenv
+ * anyenv install pyenv
+'

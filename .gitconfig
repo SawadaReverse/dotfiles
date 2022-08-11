@@ -1,0 +1,11 @@
+[user]
+	name = SawadaReverse
+	email = github@sawada.pro
+[credential]
+	credentialStore = gpg
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[merge]
+	ff = false
+[pull]
+	ff = only
