@@ -9,9 +9,9 @@ promptinit
 prompt pure
 
 # japanese input settings
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
+export GTK_IM_MODUL=fcitx5
+export QT_IM_MODULE=fcitx5
+export XMODIFIERS=@im=fcitx5
 
 # original alias
 alias ll="ls -lAh"
