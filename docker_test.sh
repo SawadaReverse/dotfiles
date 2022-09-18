@@ -9,17 +9,25 @@ setopt nonomatch
 
 echo '
 ###########
-apt update
+apt update && apt dist-upgrade
 ###########
 '
-apt update 
+apt update && apt -y dist-upgrade
+
+echo '
+###########
+apt purge ibus
+###########
+'
+
+apt -y purge ibus
 
 echo '
 ###########
 apt install vim ca-certificates ibus-mozc wget curl gdebi pass
 ###########
 '
-apt install vim ca-certificates ibus-mozc wget curl gdebi pass
+apt -y install vim ca-certificates wget curl gdebi pass fcitx5 fcitx5-mozc kde-config-fcitx5
 
 echo '
 ###########
@@ -31,7 +39,7 @@ chsh -s `which zsh`
 
 echo '
 ###########
-sudo chsh -s `which zsh`
+chsh -s `which zsh`
 ###########
 '
 
@@ -43,7 +51,7 @@ prezto install
 ###########
 '
 
-rm -r ~/.z*
+rm -rf ~/.z*
 
 git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 
@@ -62,7 +70,7 @@ git-credential-manager install
 '
 cp ${SCRIPT_DIR}/.gitconfig ~/
 wget -O gcm.deb https://github.com/GitCredentialManager/git-credential-manager/releases/download/v2.0.785/gcm-linux_amd64.2.0.785.deb
-gdebi gcm.deb
+yes | gdebi gcm.deb
 git-credential-manager-core configure
 
 echo '
@@ -71,11 +79,10 @@ anyenv install
 ###########
 '
 
+rm -rf ~/.anyenv
+rm -rf ~/.config/anyenv
 git clone https://github.com/anyenv/anyenv ~/.anyenv
 yes | ~/.anyenv/bin/anyenv install --init
-
-mkdir -p $(anyenv root)/plugins
-git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv-update
 
 echo '
 ###########
@@ -95,10 +102,14 @@ VSCode install
 wget -O vscode.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
 yes | gdebi vscode.deb
 
-echo 'install complete! Your remain tasks...
- * gpg --generate-key
- * pass init (generated key)
- * anyenv install nodenv
- * anyenv install goenv
- * anyenv install pyenv
+echo '
+###########
+call second_step.sh with zsh
+###########
+'
+
+zsh ./second_step.sh
+
+echo '
+** setup complete! Your remain tasks... Nothing! **
 '
