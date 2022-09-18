@@ -24,7 +24,7 @@ apt -y purge ibus
 
 echo '
 ###########
-apt install vim ca-certificates ibus-mozc wget curl gdebi pass
+apt install vim ca-certificates wget curl gdebi pass fcitx5 fcitx5-mozc kde-config-fcitx5
 ###########
 '
 apt -y install vim ca-certificates wget curl gdebi pass fcitx5 fcitx5-mozc kde-config-fcitx5
