@@ -1,3 +1,13 @@
-FROM ubuntu:latest
+FROM ubuntu:22.04
 
-RUN apt update && apt -y install zsh git
+ARG user_name="user"
+ARG password="password"
+
+WORKDIR /make/
+COPY dotfiles .
+
+RUN apt-get update && apt-get -y install zsh make sudo
+RUN adduser ${user_name} --disabled-password --gecos "" && gpasswd -a ${user_name} sudo && echo ${user_name}:${password} | /usr/sbin/chpasswd
+USER ${user_name}
+
+CMD [ "make", "all" ]
