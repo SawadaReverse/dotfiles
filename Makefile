@@ -58,14 +58,9 @@ install_wget: apt_reflesh
 
 prezto_setup: chsh_to_zsh install_git set_options
 	rm -rf ~/.z*
-	git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-
-	setopt EXTENDED_GLOB
-	for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
-	  ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-	done
-
+	git clone --recursive https://github.com/sorin-ionescu/prezto.git ${ZDOTDIR:-$HOME}/.zprezto
 	cp -r dotfiles/.z*rc ~
+	source ~/.zshrc
 
 set_options:
 	set -eu
