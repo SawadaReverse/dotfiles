@@ -3,24 +3,7 @@ SHELL=/bin/zsh
 help:
 	echo "this is help"
 
-all: prezto_setup anyenv_install install_gcm install_fcitx5 install_discord install_vscode
-
-anyenv_install: install_git prezto_setup set_options
-	rm -rf ~/.anyenv
-	rm -rf ~/.config/anyenv
-	git clone https://github.com/anyenv/anyenv ~/.anyenv
-	yes | ~/.anyenv/bin/anyenv install --init
-
-	source ~/.zshrc
-
-	mkdir -p $(anyenv root)/plugins
-	rm -rf $(anyenv root)/plugins/anyenv-update
-	git clone https://github.com/znz/anyenv-update.git $(anyenv root)/plugins/anyenv-update
-
-	anyenv install nodenv
-	anyenv install goenv
-	anyenv install pyenv
-	anyenv update
+all: install_prezto install_anyenv install_gcm install_fcitx5 install_discord install_vscode
 
 apt_reflesh:
 	sudo apt update && sudo apt -y dist-upgrade
@@ -28,6 +11,27 @@ apt_reflesh:
 chsh_to_zsh:
 	chsh -s `which zsh`
 	sudo chsh -s `which zsh`
+
+tmp_anyenv = ~/.anyenv/bin/anyenv
+install_anyenv: install_git set_options
+	rm -rf ~/.anyenv
+	rm -rf ~/.config/anyenv
+	git clone https://github.com/anyenv/anyenv ~/.anyenv
+
+	yes | ${tmp_anyenv} install --init
+
+	eval "$$(${tmp_anyenv} init -)"
+
+	mkdir -p $$(${tmp_anyenv} root)/plugins
+	rm -rf $$(${tmp_anyenv} root)/plugins/anyenv-update
+	git clone https://github.com/znz/anyenv-update.git $$(${tmp_anyenv} root)/plugins/anyenv-update
+
+	${tmp_anyenv} install nodenv
+	${tmp_anyenv} install goenv
+	${tmp_anyenv} install pyenv
+	${tmp_anyenv} update
+
+	unset anyenv
 
 install_discord: install_gdebi install_wget
 	wget -O discord.deb 'https://discord.com/api/download?platform=linux&format=deb'
@@ -49,18 +53,19 @@ install_gcm: install_gdebi install_git install_wget
 	yes | sudo gdebi gcm.deb
 	git-credential-manager-core configure
 
+install_prezto: chsh_to_zsh install_git set_options
+	rm -rf ~/.z*
+	git clone --recursive https://github.com/sorin-ionescu/prezto.git "$${ZDOTDIR:-$$HOME}/.zprezto"
+
+	cp -r dotfiles/.z*rc ~
+	source "$${ZDOTDIR:-$$HOME}/.zprezto/init.zsh"
+
 install_vscode: install_gdebi install_wget
 	wget -O vscode.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
 	yes | sudo gdebi vscode.deb
 
 install_wget: apt_reflesh
 	sudo apt -y install wget
-
-prezto_setup: chsh_to_zsh install_git set_options
-	rm -rf ~/.z*
-	git clone --recursive https://github.com/sorin-ionescu/prezto.git ${ZDOTDIR:-$HOME}/.zprezto
-	cp -r dotfiles/.z*rc ~
-	source ~/.zshrc
 
 set_options:
 	set -eu
