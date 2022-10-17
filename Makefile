@@ -1,9 +1,7 @@
+.DEFAULT_GOAL := help
 SHELL=/bin/zsh
 GDEBI_INSTALL = yes | sudo gdebi
 APT_INSTALL = sudo apt-get -y install
-
-help:
-	echo "this is help"
 
 all: install_prezto install_anyenv install_gcm install_fcitx5 install_discord install_vscode
 
@@ -13,6 +11,20 @@ apt_reflesh:
 chsh_to_zsh:
 	chsh -s `which zsh`
 	sudo chsh -s `which zsh`
+
+help:
+	@echo "all\t\tinstall prezto, anyenv, gcm, fcitx5, discord, vscode"
+	@echo "apt_reflesh\tapt update && apt dist-upgrade"
+	@echo "chsh_to_zsh\tchsh -s `which zsh` with current user and root"
+	@echo "install_anyenv\tinstall anyenv after install_git set_options"
+	@echo "install_discord\tinstall discord after install_gdebi, install_wget"
+	@echo "install_gdebi\tinstall gdebi after apt_reflesh"
+	@echo "install_git\tinstall git after apt_reflesh"
+	@echo "install_gcm\tinstall git-credential-manager after install_gdebi, install_git, install_wget"
+	@echo "install_prezto\tinstall prezto after chsh_to_zsh, install_git, set_options"
+	@echo "install_vscode\tinstall vscode after install_gdebi, install_wget"
+	@echo "install_wget\tinstall wget after apt_reflesh"
+	@echo "set_options\tset -eu and setopt nonomatch"
 
 ANYENV_PATH = ~/.anyenv
 ANYENV_BIN = ${ANYENV_PATH}/bin/anyenv
